@@ -4,9 +4,9 @@ FROM python:3.8
 #RUN pip3 install pyzmq==19.0.1
 
 WORKDIR /app
-COPY demos .
+COPY . .
 
 # for ZeroMQ server
 #EXPOSE 5555
 
-#CMD python3 mycode.py
+CMD python3 hello-world/hello.py

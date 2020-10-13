@@ -6,6 +6,6 @@ WORKDIR /app
 #RUN go get -d -v github.com/streadway/amqp github.com/google/uuid
 #RUN go install -v github.com/streadway/amqp github.com/google/uuid
 
-COPY demos .
+COPY . .
 
-#CMD go run mycode.go
+CMD go run hello-world/hello.go

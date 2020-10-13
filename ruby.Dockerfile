@@ -7,6 +7,6 @@ FROM ruby:2.7
 #EXPOSE 5555
 
 WORKDIR /app
-COPY demos .
+COPY . .
 
-CMD ruby mycode.rb
+CMD ruby hello-world/hello.rb

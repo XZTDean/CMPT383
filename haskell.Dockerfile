@@ -1,6 +1,6 @@
 FROM haskell:8
 
 WORKDIR /app
-COPY demos .
+COPY . .
 
-#CMD runhaskell mycode.hs
+CMD runhaskell hello-world/hello.hs
