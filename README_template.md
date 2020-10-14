@@ -37,7 +37,7 @@ The last line here refers to a Dockerfile that is used to describe the image you
 There are several `*.Dockerfile` files included here, one for each language where there is example code. They have a structure like this (annotated with comments):
 
 ```dockerfile
-FROM python:3.8  # the "base iamge" from https://hub.docker.com/ we're starting with
+FROM python:3.8  # the "base image" from https://hub.docker.com/ we're starting with
 
 # build commands to run when creating the image
 RUN pip3 install pika==1.1.0  # run this Linux command
