@@ -1,6 +1,6 @@
 ## Topic idea
 
-A online Gomoku game that user play with AI.
+A online Reversi game that user play with AI.
 
 ## Language used
 
