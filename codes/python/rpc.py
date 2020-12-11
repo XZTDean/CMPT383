@@ -4,7 +4,7 @@ import pika
 
 class Rpc:
     def __init__(self):
-        self.connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
+        self.connection = pika.BlockingConnection(pika.ConnectionParameters('rabbitmq'))
         self.channel = self.connection.channel()
         self.channel.queue_declare(queue='reversi_call')
 
@@ -16,6 +16,9 @@ class Rpc:
             auto_ack=True)
 
         self.return_value = dict()
+
+    def __del__(self):
+        self.connection.close()
 
     def call(self, body):
         corr_id = str(uuid.uuid4())
