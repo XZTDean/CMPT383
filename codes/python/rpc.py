@@ -1,3 +1,4 @@
+import time
 import uuid
 import pika
 
@@ -17,9 +18,6 @@ class Rpc:
 
         self.return_value = dict()
 
-    def __del__(self):
-        self.connection.close()
-
     def call(self, body):
         corr_id = str(uuid.uuid4())
         self.return_value[corr_id] = None
@@ -31,6 +29,7 @@ class Rpc:
 
         while self.return_value[corr_id] is None:
             self.connection.process_data_events()
+            time.sleep(1)
         res = self.return_value[corr_id]
         self.return_value.pop(corr_id)
         return res
