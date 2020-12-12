@@ -34,9 +34,8 @@ function makeNewGame() {
 
 function getGame() {
     axios.get('api/games/' + myAppObj.gameId, {})
-        .then(async function (response) {
+        .then(function (response) {
             if (response.status === 204) {
-                await new Promise(r => setTimeout(r, 1000));
                 getGame();
                 return
             }
@@ -55,11 +54,10 @@ function move(x, y) {
         "x": x,
         "y": y
     })
-        .then(async function (response) {
+        .then(function (response) {
             myAppObj.game = response.data
             clearTable()
             makeTable();
-            await new Promise(r => setTimeout(r, 2000));
             getGame();
         })
         .catch(function (error) {

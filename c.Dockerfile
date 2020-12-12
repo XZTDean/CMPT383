@@ -11,6 +11,6 @@ RUN git clone https://github.com/CopernicaMarketingSoftware/AMQP-CPP.git \
 WORKDIR /app
 COPY . .
 
-RUN g++ -Wall -O2 -levent -lamqpcpp -lpthread -ldl -o x codes/main.cpp
+RUN g++ -Wall -O2 -levent -lamqpcpp -lpthread -ldl -o x codes/cpp/main.cpp
 
 CMD ./x
