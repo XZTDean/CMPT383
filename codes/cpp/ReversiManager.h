@@ -41,7 +41,7 @@ public:
         long id = stol(str);
         Reversi *reversi = map[id];
         Reversi::Square color = Reversi::getOppositeColor(reversi->getUser());
-        Reversi::Coordinate coor = MCTS::treeSearch(*reversi, color, true);
+        Reversi::Coordinate coor = MCTS::treeSearch(*reversi, color);
         reversi->makeMove(coor, color);
         return "Finish";
     }
