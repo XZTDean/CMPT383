@@ -43,6 +43,11 @@ void receiveMessage(AMQP::TcpChannel& channel, const AMQP::Message& m, uint64_t 
     channel.ack(tag);
 }
 
+void heartbeat(const AMQP::TcpConnection& connection) {
+    connection.heartbeat();
+    std::this_thread::sleep_for (std::chrono::seconds(30));
+}
+
 int main() {
     sleep(10);
     event_base *base = event_base_new();
@@ -57,7 +62,7 @@ int main() {
         cout << "onReceived end" << endl;
     });
 
-    thread t(connection.heartbeat());
+    thread t(heartbeat(connection));
 
     event_base_dispatch(base);
     return 0;
