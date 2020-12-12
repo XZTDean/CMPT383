@@ -32,7 +32,7 @@ class Rpc:
             time.sleep(1)
         res = self.return_value[corr_id]
         self.return_value.pop(corr_id)
-        return res
+        return res.decode("utf-8")
 
     def on_response(self, ch, method, props, body):
         if self.return_value[props.correlation_id] is None:

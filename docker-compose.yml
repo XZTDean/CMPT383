@@ -57,6 +57,8 @@ services:
     build:
       context: .
       dockerfile: python.Dockerfile
+    ports:
+      - "5000:5000"
 
   #ruby:
   #  build:

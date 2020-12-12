@@ -6,4 +6,4 @@ COPY . .
 RUN pip install flask \
     && pip install pika
 
-CMD python3 codes/hello.py
+CMD python3 codes/python/app.py
