@@ -5,7 +5,7 @@ const myAppObj = new Vue({
         playersTurn: true,
         game: null,
         board: null,
-    },
+    }
 
 });
 
@@ -18,6 +18,8 @@ function makeNewGame() {
             }
             myAppObj.gameId = response.data
             getGame()
+            setTimeout(getGame, 10000)
+
         })
         .catch(function (error) {
             console.log("POST new game error: ", error);
@@ -28,7 +30,9 @@ function getGame() {
     axios.get('api/games/' + myAppObj.gameId, {})
         .then(function (response) {
             if (response.status === 204) {
-                getGame();
+                if (myAppObj.game.turn !== "end") {
+                    setTimeout(getGame, 1000)
+                }
                 return
             }
             myAppObj.game = response.data
@@ -50,7 +54,7 @@ function move(x, y) {
             myAppObj.game = response.data
             clearTable()
             makeTable();
-            getGame();
+            setTimeout(getGame, 1000)
         })
         .catch(function (error) {
             if (error.response.status === 400) {
@@ -58,6 +62,7 @@ function move(x, y) {
                 console.log("POST move: Invalid move");
             } else if (error.response.status === 403) {
                 alert("It's not your turn");
+                setTimeout(getGame, 500)
                 console.log("POST move: Invalid turn");
             } else {
                 console.log("POST move error: ", error);
@@ -91,8 +96,10 @@ function makeTable() {
             myAppObj.game.board[i][j]
             img.src = "/static/" + myAppObj.game.board[i][j] + ".png";
             td.appendChild(img);
-            td.onclick = function() {
-                move(j - 1, i - 1)
+            if (myAppObj.game.turn !== "end") {
+                td.onclick = function () {
+                    move(j - 1, i - 1)
+                }
             }
             tr.appendChild(td);
         }

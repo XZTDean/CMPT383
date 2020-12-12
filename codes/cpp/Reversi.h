@@ -337,7 +337,7 @@ public:
         stream << "\"turn\": \"";
         if (isEnd()) {
             stream << "end\", \"win\":\"";
-            if (getWinner() == white) {
+            if (getWinner() == user) {
                 stream << "user\"}";
             } else {
                 stream << "computer\"}";
