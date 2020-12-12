@@ -62,7 +62,7 @@ int main() {
         cout << "onReceived end" << endl;
     });
 
-    thread t(heartbeat(connection));
+    thread t(heartbeat, ref(connection));
 
     event_base_dispatch(base);
     return 0;
