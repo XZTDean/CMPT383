@@ -42,7 +42,7 @@ function getGame() {
 }
 
 function move(x, y) {
-    axios.post('api/games/' + myAppObj.gameId, {
+    axios.post('api/games/' + myAppObj.gameId + '/move', {
         "x": x,
         "y": y
     })
