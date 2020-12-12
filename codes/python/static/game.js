@@ -92,11 +92,23 @@ function makeTable() {
             img.src = "/static/" + myAppObj.game.board[i][j] + ".png";
             td.appendChild(img);
             td.onclick = function() {
-                move(i - 1, j - 1)
+                move(j - 1, i - 1)
             }
             tr.appendChild(td);
         }
         table.appendChild(tr)
+    }
+    let turn = document.getElementById("turn");
+    if (myAppObj.game.turn === "user") {
+        turn.innerHTML = "This is user's turn";
+    } else if (myAppObj.game.turn === "computer") {
+        turn.innerHTML = "This is computer's turn";
+    } else {
+        if (myAppObj.game.win === "user") {
+            turn.innerHTML = "User Wins";
+        } else {
+            turn.innerHTML = "Computer Wins";
+        }
     }
 }
 
