@@ -2,6 +2,7 @@
 #define MCTS_H
 
 #include "Reversi.h"
+#include <thread>
 
 //vector<int> getSortedVectorIndex(const vector<int>& v);
 
@@ -28,74 +29,40 @@ public:
         }
     }
 
-    static Reversi::Coordinate treeSearch(const Reversi& reversi, const Reversi::Square& color, bool modify) {
+    static Reversi::Coordinate treeSearch(const Reversi& reversi, const Reversi::Square& color) {
         auto possibleMove = reversi.getPossibleMove(color);
-//        Reversi::Square opponent = Reversi::getOppositeColor(color);
-//        int size = possibleMove.size();
-//        vector<int> mobility;
-//        vector<int> opponentMobility;
 
+        vector<thread> threads;
         vector<heuristic> scores;
         for (auto&& move : possibleMove) {
-            heuristic h(color, move, modify);
-            Reversi tmpBoard = reversi;
-            tmpBoard.makeMove(move, color);
-//            int option = tmpBoard.getPossibleMove(color).size();
-//            int opponentOption = tmpBoard.getPossibleMove(opponent).size();
-//            mobility.push_back(option);
-//            opponentMobility.push_back(opponentOption);
-            Reversi* tmpRes;
-            for (int i = 0; i < 2000; ++i) {
-                tmpRes = playToEnd(tmpBoard, color);
-                h.calculateScore(*tmpRes);
-                delete tmpRes;
-            }
-            scores.push_back(h);
+            thread t(calculateScore, ref(reversi), ref(color), ref(scores), ref(move));
+            threads.push_back(std::move(t));
         }
-//        vector<int> rankMobility = getSortedVectorIndex(mobility); // small rank better
-//        vector<int> rankOpponentMobility = getSortedVectorIndex(opponentMobility); // large rank better
-//        vector<int> rankOverall;
-//        for (int i = 0; i < size; ++i) {
-//            int overall = rankMobility[i] - rankOpponentMobility[i];
-//            rankOverall.push_back(overall);
-//        }
-//        vector<int> rank = getSortedVectorIndex(rankOverall); // large rank better
-//        double reward = 0.1;
-//        for (int i = 0; i < size; ++i) {
-//            scores[i].setWeight(0.95 + reward * i / (size - 1));
-//        }
+        for (auto&& t : threads) {
+            t.join();
+        }
 
         auto maxIt = max_element(scores.begin(),scores.end());
         return maxIt->getCoordinate();
     }
 
-private:
     class heuristic {
     public:
-        heuristic(const Reversi::Square& color, const Reversi::Coordinate& coordinate, bool modified)
-                : color(color), score(0), coordinate(coordinate), modified(modified) {}
+        heuristic(const Reversi::Square& color, const Reversi::Coordinate& coordinate)
+                : color(color), score(0), coordinate(coordinate) {}
 
         void calculateScore(const Reversi& reversi) {
             winning(reversi);
-            if (modified) {
-                corner(reversi);
-            }
+            corner(reversi);
         }
 
         double getScore() const {
-//            if (modified) {
-//                return score * weight;
-//            }
             return score;
         }
 
         const Reversi::Coordinate& getCoordinate() const {
             return coordinate;
         }
-
-//        void setWeight(double weight) {
-//            heuristic::weight = weight;
-//        }
 
         // for compare score
         bool operator==(const heuristic& rhs) const {
@@ -141,56 +108,26 @@ private:
             delete cor;
         }
 
-//        void coordinateCheck() {
-//            if (coordinate.x == 0 || coordinate.x == Reversi::edgeSize - 1) {
-//                if (coordinate.y == 0 || coordinate.y == Reversi::edgeSize - 1) {
-//                    weight *= 1.1;
-//                } else if (coordinate.y == 1 || coordinate.y == Reversi::edgeSize - 2) {
-//                    weight *= 0.9;
-//                } else if (coordinate.y == 2 || coordinate.y == Reversi::edgeSize - 3) {
-//                    weight *= 1.05;
-//                }
-//            } else if (coordinate.x == 1 || coordinate.x == Reversi::edgeSize - 2) {
-//                if (coordinate.y == 0 || coordinate.y == Reversi::edgeSize - 1) {
-//                    weight *= 0.9;
-//                } else if (coordinate.y == 1 || coordinate.y == Reversi::edgeSize - 2) {
-//                    weight *= 0.95;
-//                }
-//            } else if (coordinate.x == 2 || coordinate.x == Reversi::edgeSize - 3) {
-//                if (coordinate.y == 0 || coordinate.y == Reversi::edgeSize - 1) {
-//                    weight *= 1.05;
-//                }
-//            }
-//        }
-
         double score;
-//        double weight;
-        bool modified;
         const Reversi::Square& color;
         const Reversi::Coordinate& coordinate;
     };
+
+private:
+    static void calculateScore(const Reversi& reversi, const Reversi::Square& color, vector<heuristic>& scores,
+                               const Reversi::Coordinate& move) {
+        heuristic h(color, move);
+        Reversi tmpBoard = reversi;
+        tmpBoard.makeMove(move, color);
+        Reversi* tmpRes;
+        for (int i = 0; i < 2000; ++i) {
+            tmpRes = playToEnd(tmpBoard, color);
+            h.calculateScore(*tmpRes);
+            delete tmpRes;
+        }
+        scores.push_back(h);
+    }
 };
 
-
-//vector<int> getSortedVectorIndex(const vector<int>& v) {
-//    int size = v.size();
-//    vector<int> index;
-//    vector<int> rank(size, -1);
-//    for (int i = 0; i < size; ++i) {
-//        int largestIndex = -1;
-//        for (int j = 0; j < size; ++j) {
-//            if (find(index.begin(), index.end(), j) == index.end()) {
-//                if (largestIndex == -1) {
-//                    largestIndex = j;
-//                } else if (v[j] > v[largestIndex]) {
-//                    largestIndex = j;
-//                }
-//            }
-//        }
-//        rank[largestIndex] = i;
-//        index.push_back(largestIndex);
-//    }
-//    return rank;
-//}
 
 #endif //MCTS_H
