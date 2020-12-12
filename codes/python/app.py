@@ -59,6 +59,7 @@ def move(game_id):
     game = reversi.Reversi(json.loads(res))
     game.generate_display_board()
     games_turn[game_id] = game.turn
+    games_status[game_id] = 1
 
     threading.Thread(target=computer_move, args=(game_id,)).start()
 
