@@ -45,14 +45,14 @@ def get_game(game_id):
 @app.route('/api/games/<game_id>/move', methods=['POST'])
 def move(game_id):
     if games_turn[game_id] != 'user':
-        abort(403, description="Not your tern")
+        abort(403, description="Not your turn")
 
     data = request.json
     args = "U " + game_id + " " + str(data['x']) + " " + str(data['y'])
     res = r.call(args)
 
     if res == 'Invalid':
-        abort(403, description="Move Invalid")
+        abort(400, description="Move Invalid")
 
     game = reversi.Reversi(json.loads(res))
     game.generate_display_board()
