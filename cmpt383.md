@@ -19,3 +19,18 @@ C++, Python, JavaScript
 ## Deployment technology
 
 Docker Compose + Containers
+
+## Running Command
+
+docker-compose build && docker-compose up
+
+## Application Detail
+
+This is the reversi game, user can click the start button to start a game
+
+Click the cells on board to play the game.
+
+Users can end the game by clicking the end game button at anytime
+
+The application allow multiple users play at the same time.
+

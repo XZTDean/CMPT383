@@ -43,7 +43,7 @@ void receiveMessage(AMQP::TcpChannel& channel, const AMQP::Message& m, uint64_t 
     channel.ack(tag);
 }
 
-void heartbeat(const AMQP::TcpConnection& connection) {
+void heartbeat(AMQP::TcpConnection& connection) {
     connection.heartbeat();
     std::this_thread::sleep_for (std::chrono::seconds(30));
 }

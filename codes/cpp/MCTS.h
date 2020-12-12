@@ -4,8 +4,6 @@
 #include "Reversi.h"
 #include <thread>
 
-//vector<int> getSortedVectorIndex(const vector<int>& v);
-
 class MCTS {
 public:
     static Reversi* playToEnd(const Reversi& reversi, Reversi::Square color) {
