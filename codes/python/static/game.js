@@ -7,14 +7,6 @@ const myAppObj = new Vue({
         board: null,
     },
 
-    methods: {
-        newGame: makeNewGame,
-        // catMove: sendMoveCats,
-        //
-        // locationMatches: function(loc, x, y) {
-        //     return loc.x == x && loc.y == y;
-        // },
-    }
 });
 
 function makeNewGame() {
@@ -50,7 +42,7 @@ function getGame() {
 }
 
 function move(x, y) {
-    axios.post('api/games', {
+    axios.post('api/games/' + myAppObj.gameId, {
         "x": x,
         "y": y
     })

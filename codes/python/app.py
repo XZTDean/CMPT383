@@ -38,6 +38,8 @@ def get_game(game_id):
     game.generate_display_board()
 
     games_turn[game_id] = game.turn
+    if games_turn[game_id] == 'computer':
+        threading.Thread(target=computer_move, args=(game_id,)).start()
 
     return json.dumps(game.to_dict())
 
