@@ -26,6 +26,8 @@ docker-compose build && docker-compose up
 
 ## Application Detail
 
+Game URL: http://localhost:5000
+
 This is the reversi game, user can click the start button to start a game
 
 Click the cells on board to play the game.
